@@ -91,6 +91,36 @@
     // 4. Lakukan validasi dan perhitungan aritmatika.
     // 5. Tampilkan hasil rincian struk menggunakan Template Literals ke elemen hasil-struk.
 
+    //1
+    const inputharga = document.getElementById("input-harga");
+    const inputdiskon = document.getElementById("input-diskon");
+    const btnhitung = document.getElementById("btn-hitung");
+    const hasilstruk = document.getElementById("hasil-struk");
+
+    //2
+    btnhitung.addEventListener("click", () => {
+      //3
+      const hargaawal = parseFloat(inputharga.value);
+      const diskon = parseFloat(inputdiskon.value);
+
+      //4
+      if(isNaN(hargaawal) || isNaN(diskon)){
+        hasilstruk.innerText = 'Harga atau diskon tidak boleh kosong!';
+        hasilstruk.style.display = 'block';
+        return;
+      }
+
+      if (hargaawal < 0 || diskon < 0 || diskon > 100){
+        hasilstruk.innerText = 'Masukkan harga atau diskon yang valid!';
+        hasilstruk.style.display = 'block';
+        return;
+      }
+
+      const potongan = hargaawal * (diskon/100);
+      const hargadiskon = hargaawal - potongan;
+
+      hasilstruk.innerText = '=====STRUK BELANJA=====\nTotal Belanja: Rp ' + hargaawal + '\nDiskon: ' + diskon + '%\nPotongan Harga: Rp ' + potongan + '\n=======================\nGrand Total: Rp ' + hargadiskon;
+    });
   </script>
 </body>
 </html>
