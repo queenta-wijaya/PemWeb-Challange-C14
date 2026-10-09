@@ -58,6 +58,22 @@
       white-space: pre-line;
       display: none; /* Munculkan lewat JS setelah tombol diklik */
     }
+    .hasil-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 12px;
+      margin-bottom: 14px;
+    }
+    .hasil-nama {
+      font-size: 17px;
+      font-weight: bold;
+      color:#222;
+    }
+    .badge-grade {
+
+    }
   </style>
 </head>
 <body>
@@ -95,49 +111,86 @@
   <!-- KERJAKAN LOGIKA JAVASCRIPT ANDA DI DALAM TAG SCRIPT BERIKUT  -->
   <!-- ============================================================ -->
   <script>
-    // Tulis kode JavaScript Anda di sini.
-    // 1. Buat fungsi hitungNilaiAkhir(tugas, uts, uas)
-    // 2. Buat fungsi tentukanGrade(nilaiAkhir)
-    // 3. Buat fungsi cekKelulusan(nilaiAkhir) menggunakan Ternary Operator (? :)
-    // 4. Pasang event listener click pada tombol btn-evaluasi --Done
-    // 5. Validasi input (rentang 0 - 100) --Done
-    // 6. Gunakan looping untuk mencetak komponen rincian penilaian
-    // 7. Tampilkan hasil evaluasi ke elemen hasil-evaluasi dan console.log
-
     const tombol = document.getElementById("btn-evaluasi");
 
+    function hitungNilaiAkhir(tugas, uts, uas) {
+      return (tugas * 0.30) + (uts * 0.35) + (uas * 0.35);
+    }
+
+    function tentukanGrade(nilaiAkhir) {
+      if (nilaiAkhir >= 85) return "A";
+      if (nilaiAkhir >= 75) return "B";
+      if (nilaiAkhir >= 65) return "C";
+      if (nilaiAkhir >= 50) return "D";
+      return "E";
+    }
+
+    function cekKelulusan(nilaiAkhir) {
+      return nilaiAkhir >= 60 ? "LULUS" : "TIDAK LULUS";
+    }
+
     tombol.addEventListener("click", function(){
-        const nama = document.getElementById("input-nama").value;
-        const tugas = document.getElementById("input-tugas").value;
-        const uts = document.getElementById("input-uts").value;
-        const uas = document.getElementById("input-uas").value;
-        
-        if(nama.trim()===""){
-            alert("NAMA MAHASISWA WAJIB DIISI!");
-            return;
-        }
-        if(tugas === "" || uts === "" || uas === ""){
-            alert("SEMUA NILAI WAJIB DIISI!");
-            return;
-        }
+      const nama = document.getElementById("input-nama").value;
+      const tugas = document.getElementById("input-tugas").value;
+      const uts = document.getElementById("input-uts").value;
+      const uas = document.getElementById("input-uas").value;
 
-        const angkaTugas = Number(tugas);
-        const angkaUTS = Number(uts);
-        const angkaUAS = Number(uas);
+      if (nama.trim() === "") {
+        alert("NAMA MAHASISWA WAJIB DIISI!");
+        return;
+      }
+      if (tugas === "" || uts === "" || uas === "") {
+        alert("SEMUA NILAI WAJIB DIISI!");
+        return;
+      }
 
-        if(angkaTugas < 0 || angkaTugas > 100){
-            alert("RANGE TUGAS WAJIB 0-100");
-            return;
-        }
-        if(angkaUTS < 0 || angkaUTS > 100){
-            alert("RANGE UTS WAJIB 0-100");
-            return;
-        }
-        if(angkaUAS < 0 || angkaUAS > 100){
-            alert("RANGE UAS WAJIB 0-100");
-            return;
-        }
-    })
+      const angkaTugas = Number(tugas);
+      const angkaUTS = Number(uts);
+      const angkaUAS = Number(uas);
+
+      if (angkaTugas < 0 || angkaTugas > 100) {
+        alert("RANGE TUGAS WAJIB 0-100");
+        return;
+      }
+      if (angkaUTS < 0 || angkaUTS > 100) {
+        alert("RANGE UTS WAJIB 0-100");
+        return;
+      }
+      if (angkaUAS < 0 || angkaUAS > 100) {
+        alert("RANGE UAS WAJIB 0-100");
+        return;
+      }
+
+      const nilaiAkhir = hitungNilaiAkhir(angkaTugas, angkaUTS, angkaUAS);
+      const grade = tentukanGrade(nilaiAkhir);
+      const status = cekKelulusan(nilaiAkhir);
+
+      const komponen = [
+        { label: "Tugas", nilai: angkaTugas, bobot: 0.30 },
+        { label: "UTS", nilai: angkaUTS, bobot: 0.35 },
+        { label: "UAS", nilai: angkaUAS, bobot: 0.35 }
+      ];
+
+      let rincian = "";
+      for (let i = 0; i < komponen.length; i++) {
+        const item = komponen[i];
+        const kontribusi = (item.nilai * item.bobot).toFixed(2);
+        rincian += `${item.label.padEnd(6)}: ${item.nilai} x ${item.bobot * 100}% = ${kontribusi}\n`;
+      }
+
+      const hasilBox = document.getElementById("hasil-evaluasi");
+      const teksHasil = `Nama Mahasiswa : ${nama}
+--------------------------------
+${rincian}--------------------------------
+Nilai Akhir    : ${nilaiAkhir.toFixed(2)}
+Grade          : ${grade}
+Status         : ${status}`;
+
+      hasilBox.textContent = teksHasil;
+      hasilBox.style.display = "block";
+
+      console.log(teksHasil);
+    });
   </script>
 </body>
 </html>
