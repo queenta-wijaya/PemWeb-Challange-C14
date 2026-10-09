@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "title": "Belajar TypeScript",
+    "status": "done"
+  },
+  {
+    "id": 2,
+    "title": "Belaja IoT",
+    "status": "todo"
+  },
+  {
+    "id": 3,
+    "title": "Latihan wisuda",
+    "status": "todo"
+  }
+]
